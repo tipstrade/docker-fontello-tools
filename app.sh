@@ -20,7 +20,7 @@ if [ "$1" == "start" ]; then
     --form "config=@${CONFIG_FILE}" \
     "${FONTELLO_HOST}" \
     && echo \
-    && echo "Fontello session has been created and can be accessed here:"
+    && echo "Fontello session has been created and can be accessed here:" \
     && echo "  ${FONTELLO_HOST}/$(cat $SESSION_FILE)"
 elif [ "$1" == "download" ]; then
   TMP=$(mktemp -d)
