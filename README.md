@@ -35,3 +35,25 @@ Poweershell
 ```ps
 docker run --rm  -v "$(PWD)/fontello/:/fontello/:rw" oobayly/fontello-tools:latest start
 ```
+
+## Automating with NPM scripts
+Further automation can be done using scripts in `package.json`
+- start script will upload and output the session link
+- download script will download and extract the required items
+- postdownload script can be used to copy the extracted items to the required location
+  - copy-fonts - copies the font files into a webapp
+  - copy-font-css - uses sed to replace the relative paths in the css and output to the webapp styles
+```json
+{
+  "scripts": {
+    "fontello-start": "docker run --rm -v \"%CD%/fontello/:/fontello/:rw\" oobayly/fontello-tools:latest start",
+    "fontello-download": "docker run --rm -v \"%CD%/fontello/:/fontello/:rw\" oobayly/fontello-tools:latest download font css/fontello.css",
+    "postfontello-download": "npm run copy-fonts && npm run copy-font-css",
+    "copy-fonts": "shx cp -R fontello/font/* ../website/public/fonts/",
+    "copy-font-css": "shx sed \"s/..\\/font/\\/fonts/\" fontello/css/fontello.css > ../website/src/styles/_fontello.scss"
+  },
+  "devDependencies": {
+    "shx": "^0.4.0"
+  }
+}
+```
